@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PokemonModule } from './pokemons/pokemons.module';
@@ -8,7 +9,7 @@ console.log('this is in app module', process.env.MONGO_URL); // Debugging
 @Module({
   imports: [
     MongooseModule.forRoot(
-      (process.env.MONGO_URL as string) || 'mongodb://localhost:27017/',
+      (process.env.MONGO_URL as string) || 'mongodb+srv://admin:admin123@cluster0.shyz7.mongodb.net/pokemon?retryWrites=true&w=majority',
       {},
     ),
     PokemonModule,
