@@ -9,7 +9,7 @@ console.log('this is in app module', process.env.MONGO_URL); // Debugging
 @Module({
   imports: [
     MongooseModule.forRoot(
-      (process.env.MONGO_URL as string) || 'mongodb+srv://admin:admin123@cluster0.shyz7.mongodb.net/?retryWrites=true&w=majority',
+      (process.env.MONGO_URL as string) || 'mongodb+srv://admin:admin123@cluster0.shyz7.mongodb.net/pokemon?retryWrites=true&w=majority',
       {},
     ),
     PokemonModule,
