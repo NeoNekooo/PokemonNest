@@ -10,23 +10,26 @@ import {
   Delete,
   Patch,
   BadRequestException,
-  Query
+  Query,
+  HttpCode,
+  ParseIntPipe
 } from '@nestjs/common';
 import { PokemonsService } from './pokemons.service';
 import { CreatePokemonDto } from './dto/CreatePokemon.dto';
+
 @Controller('pokemons')
 export class PokemonsController {
-  constructor(private pokemonsService: PokemonsService) {}
+  constructor(private readonly pokemonsService: PokemonsService) {}
 
   @Post()
   @UsePipes(new ValidationPipe())
   async createPokemon(@Body() createPokemonDto: CreatePokemonDto) {
-    return await this.pokemonsService.createPokemon(createPokemonDto);
+    return this.pokemonsService.createPokemon(createPokemonDto);
   }
 
   @Get()
-  async getPokemons() {
-    return await this.pokemonsService.getPokemons();
+  getPokemons() {
+    return this.pokemonsService.getPokemons();
   }
 
   @Get('caught/count')
@@ -35,8 +38,8 @@ export class PokemonsController {
   }
 
   @Get('caught')
-  async getCaughtPokemon() {
-    return await this.pokemonsService.getCaughtPokemons();
+  getCaughtPokemon() {
+    return this.pokemonsService.getCaughtPokemons();
   }
 
   @Get(':id')
@@ -45,7 +48,7 @@ export class PokemonsController {
     if (isNaN(numericId)) {
       throw new BadRequestException('Invalid Pokémon ID');
     }
-    return await this.pokemonsService.getPokemonById(numericId);
+    return this.pokemonsService.getPokemonById(numericId);
   }
 
   @Patch(':id')
@@ -53,21 +56,17 @@ export class PokemonsController {
     @Param('id') pokeId: string,
     @Body() updatePokemonDto: Partial<CreatePokemonDto>,
   ) {
-    return await this.pokemonsService.updatePokemon(
-      Number(pokeId),
-      updatePokemonDto,
-    );
+    return this.pokemonsService.updatePokemon(Number(pokeId), updatePokemonDto);
   }
 
   @Delete(':id')
   async deletePokemon(@Param('id') pokeId: string) {
-    return await this.pokemonsService.deletePokemon(Number(pokeId));
+    return this.pokemonsService.deletePokemon(Number(pokeId));
   }
 
- 
-
   @Post('fetch')
-  async fetchPokemons(@Query('limit') limit: number) {
-    return this.pokemonsService.fetchPokemons(limit || 50);
+  @HttpCode(200)
+  fetchPokemons(@Query('limit', ParseIntPipe) limit = 50) {
+    return this.pokemonsService.fetchPokemons(limit);
   }
 }
