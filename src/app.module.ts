@@ -1,16 +1,17 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
+import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PokemonsModule } from './pokemons/pokemons.module'; 
+import { PokemonsModule } from './pokemons/pokemons.module';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
-console.log('this is in app module', process.env.MONGO_URL); // Debugging
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     MongooseModule.forRoot(
-      (process.env.MONGO_URL as string) || 'mongodb+srv://admin:admin123@cluster0.shyz7.mongodb.net/pokemons?retryWrites=true&w=majority',
-      {},
+      process.env.MONGO_URL ||
+        'mongodb+srv://admin:admin123@cluster0.shyz7.mongodb.net/pokemons?retryWrites=true&w=majority',
     ),
     PokemonsModule,
   ],

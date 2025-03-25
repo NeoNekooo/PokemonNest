@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ collection: 'pokemons' }) // Pastikan koleksi 'pokemons' di sini
+@Schema({ collection: 'pokemons' }) // Menentukan nama koleksi
 export class Pokemon extends Document {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true }) // 🛠 Tambahkan unique: true untuk mencegah duplikasi
   pokeId: number;
 
   @Prop({ required: true })
@@ -33,8 +33,8 @@ export class Pokemon extends Document {
   @Prop({ type: [{ stat: { name: String }, base_stat: Number }] })
   stats: { stat: { name: string }; base_stat: number }[];
 
-  @Prop()
-  averageStats: string;
+  @Prop({ type: Number }) // 🛠 Pastikan averageStats menggunakan Number, bukan string
+  averageStats: number;
 
   @Prop({ default: false })
   caught: boolean;

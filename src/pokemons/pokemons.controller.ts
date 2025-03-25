@@ -12,10 +12,11 @@ import {
   BadRequestException,
   Query,
   HttpCode,
-  ParseIntPipe
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PokemonsService } from './pokemons.service';
 import { CreatePokemonDto } from './dto/CreatePokemon.dto';
+import { UpdatePokemonDto } from './dto/UpdatePokemon.dto';
 
 @Controller('pokemons')
 export class PokemonsController {
@@ -28,7 +29,7 @@ export class PokemonsController {
   }
 
   @Get()
-  getPokemons() {
+  getPokemons() { // ✅ Perbaikan: Ubah dari fetchPokemons() agar tidak bentrok
     return this.pokemonsService.getPokemons();
   }
 
@@ -38,7 +39,7 @@ export class PokemonsController {
   }
 
   @Get('caught')
-  getCaughtPokemon() {
+  getCaughtPokemons() {
     return this.pokemonsService.getCaughtPokemons();
   }
 
@@ -54,7 +55,7 @@ export class PokemonsController {
   @Patch(':id')
   async updatePokemon(
     @Param('id') pokeId: string,
-    @Body() updatePokemonDto: Partial<CreatePokemonDto>,
+    @Body() updatePokemonDto: UpdatePokemonDto,
   ) {
     return this.pokemonsService.updatePokemon(Number(pokeId), updatePokemonDto);
   }
