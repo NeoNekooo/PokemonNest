@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ collection: 'pokemons' }) // Harus sesuai dengan collection di database
+@Schema({ collection: 'pokemons' }) // Pastikan koleksi 'pokemons' di sini
 export class Pokemon extends Document {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   pokeId: number;
 
   @Prop({ required: true })
@@ -12,7 +12,7 @@ export class Pokemon extends Document {
   @Prop()
   image: string;
 
-  @Prop([String])
+  @Prop({ type: [String] })
   types: string[];
 
   @Prop()
@@ -21,26 +21,23 @@ export class Pokemon extends Document {
   @Prop()
   weight: string;
 
-  @Prop([String])
+  @Prop({ type: [String] })
   abilities: string[];
 
   @Prop()
   experience: number;
 
-  @Prop()
+  @Prop({ type: [{ move: { name: String } }] })
   moves: { move: { name: string } }[];
 
-  @Prop()
-  stats: { base_stat: number; stat: { name: string } }[];
+  @Prop({ type: [{ stat: { name: String }, base_stat: Number }] })
+  stats: { stat: { name: string }; base_stat: number }[];
 
   @Prop()
   averageStats: string;
 
   @Prop({ default: false })
   caught: boolean;
-
-  @Prop()
-  caughtAt?: string;
 }
 
 export const PokemonSchema = SchemaFactory.createForClass(Pokemon);
